@@ -1,0 +1,17 @@
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.user
+*.app
+build/
+Makefile*
+.qmake.stash
+.vscode/
+.idea/
+.DS_Store
+moc_*
+ui_*
+qrc_*
