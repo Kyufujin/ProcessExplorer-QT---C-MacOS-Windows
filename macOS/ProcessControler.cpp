@@ -30,7 +30,6 @@ void ProcessControler::monitorProcess(pid_t pid, int frequency) {
                 break;
             }
     
-               
             std::this_thread::sleep_for(std::chrono::seconds(frequency));
         } catch (const std::runtime_error& e) {
             std::cerr << "error: " << e.what() << "\n";

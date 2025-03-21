@@ -51,3 +51,29 @@ void ProcessExplorer::ProcessTerminator(pid_t pid, bool isForced){
     }
 }
 
+int ProcessExplorer::getProcessPriority(pid_t pid){
+    errno = 0;
+    int priority = getpriority(PRIO_PROCESS, pid);
+
+    if (errno != 0) {
+        throw std::runtime_error("Process priority could not be obtained for: " + std::to_string(pid));
+    }
+
+    return priority;
+}
+
+void ProcessExplorer::changeProcessPriority(pid_t pid, int delta){
+    errno = 0; 
+    int currentPriority = getpriority(PRIO_PROCESS, pid);
+
+    if (errno != 0) { 
+        throw std::runtime_error("couldn't get the priority");
+    }
+
+    int newPriority = std::clamp(currentPriority + delta, -20, 19);
+
+    if (setpriority(PRIO_PROCESS, pid, newPriority) == -1) {
+        throw std::runtime_error("couldn't change the priority");
+    }
+}
+
