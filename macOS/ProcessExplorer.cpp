@@ -25,9 +25,29 @@ std::vector<ProcessUnit> ProcessExplorer::getProcessList(){
         ProcessUnit pInfo;
         pInfo.setpID(procList[i].kp_proc.p_pid);
         pInfo.setpName(procList[i].kp_proc.p_comm);
+
+        struct proc_taskinfo tInfo;
+        if (proc_pidinfo(procList[i].kp_proc.p_pid, PROC_PIDTASKINFO, 0, &tInfo, sizeof(tInfo)) > 0) {
+            size_t residentMB = tInfo.pti_resident_size / 1024 / 1024;
+            size_t virtualMB = tInfo.pti_virtual_size / 1024 / 1024;
+            size_t cpuTimeMS = (tInfo.pti_total_user + tInfo.pti_total_system) / 1000000;
+        
+            pInfo.setpMemory(residentMB, virtualMB);
+            pInfo.setpCPUtime(cpuTimeMS);
+        }
+
         pList.push_back(pInfo);
     }
 
     return pList;
+}
+
+void ProcessExplorer::ProcessTerminator(pid_t pid, bool isForced){
+    int signal = isForced ? SIGKILL : SIGTERM;
+    if (kill(pid, signal) == -1) {
+        std::cerr << "process could not be killed\n" << pid << "\n";
+    } else {
+        std::cout << "Process: " << pid << " was terminated.\n";
+    }
 }
 

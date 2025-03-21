@@ -7,6 +7,8 @@
 #include "ProcessUnit.hpp"
 
 class ProcessExplorer{
+    private:
+        void ProcessTerminator(pid_t pid, bool isForced); //// I'LL BE BACK
     public:
         std::vector<ProcessUnit> getProcessList();
     };
