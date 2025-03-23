@@ -1,23 +1,12 @@
 #include <QApplication>
 #include <QPushButton>
-#include "ProcessControler.hpp"
+#include <MainWindow.hpp>
 int main(int argc, char *argv[]) {
     
-    //////////////// --> as for now,    QT seems to work, let's focus on functionality instead :)
-    /*try {
-        ProcessExplorer explorer;
-        ProcessControler controler{explorer};
+    QApplication app(argc, argv); // Tworzenie aplikacji Qt
 
-        controler.printProcesses();
+    MainWindow mainWindow;        // Tworzenie głównego okna
+    mainWindow.show();            // Wyświetlanie okna
 
-        pid_t pid;
-        std::cout << "\nProvide pid of process to monitor: ";
-        std::cin >> pid;
-
-        controler.monitorProcess(pid, 2); 
-
-    } catch (const std::runtime_error& e) {
-        std::cerr << "error: " << e.what() << "\n";
-    }*/
-    return 0;
+    return app.exec();            // Uruchomienie pętli zdarzeń Qt
 }
