@@ -1,5 +1,4 @@
 #include "MainWindow.hpp"
-#include "../macOS/ProcessExplorer.hpp" // was trying to work on that but couldn't figure it out beter :(
 #include <QVBoxLayout>
 #include <QTimer>
 
@@ -25,6 +24,8 @@ void MainWindow::setUI() {
 
     setCentralWidget(mainWidget);
     setWindowTitle("BB Process Explorer");
+
+    clicker = std::make_unique<Clicker>(pTable.get());
 }
 
 void MainWindow::loadProcesses() {
