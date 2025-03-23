@@ -26,6 +26,7 @@ void MainWindow::setUI() {
     setWindowTitle("BB Process Explorer");
 
     clicker = std::make_unique<Clicker>(pTable.get());
+    connect(clicker.get(), &Clicker::processToRemove, this, &MainWindow::removeProcess);
 }
 
 void MainWindow::loadProcesses() {
@@ -37,16 +38,20 @@ void MainWindow::loadProcesses() {
 
     for (int i = 0; i < processes.size(); ++i) {
         const auto &process = processes[i];
-        auto nameItem = std::make_unique<QTableWidgetItem>(QString::fromStdString(process.getpName()));
-        auto pidItem = std::make_unique<QTableWidgetItem>(QString::number(process.getpID()));
-        auto cpuItem = std::make_unique<QTableWidgetItem>(QString::number(process.getpCPU()));
-        auto ramItem = std::make_unique<QTableWidgetItem>(QString::number(process.getpRAM()));
-        auto vMemoryItem = std::make_unique<QTableWidgetItem>(QString::number(process.getpVMEMORY()));    
+        pTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(process.getpName())));
+        pTable->setItem(i, 1, new QTableWidgetItem(QString::number(process.getpID())));
+        pTable->setItem(i, 2, new QTableWidgetItem(QString::number(process.getpCPU())));
+        pTable->setItem(i, 3, new QTableWidgetItem(QString::number(process.getpRAM())));
+        pTable->setItem(i, 4, new QTableWidgetItem(QString::number(process.getpVMEMORY())));
+    }
+}
 
-        pTable->setItem(i, 0, nameItem.release());
-        pTable->setItem(i, 1, pidItem.release());
-        pTable->setItem(i, 2, cpuItem.release());
-        pTable->setItem(i, 3, ramItem.release());
-        pTable->setItem(i, 4, vMemoryItem.release());
+void MainWindow::removeProcess(pid_t pid) {
+    ProcessExplorer explorer; 
+    try {
+        explorer.ProcessTerminator(pid, true); 
+        qDebug() << "PID: " << pid << "removed";
+    } catch (const std::runtime_error &e) {
+        qDebug() << "PID: " << pid << ". Could not be removed:" << e.what();
     }
 }

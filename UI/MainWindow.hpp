@@ -13,6 +13,9 @@ class MainWindow : public QMainWindow {
 public:
     explicit MainWindow(QWidget *parent = nullptr);
 
+private slots:
+    void removeProcess(pid_t pid);
+
 private:
     std::unique_ptr<QTableWidget> pTable;
     std::unique_ptr<Clicker> clicker; 

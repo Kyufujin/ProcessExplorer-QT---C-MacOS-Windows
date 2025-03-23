@@ -10,9 +10,13 @@ class Clicker : public QObject {
 public:
     explicit Clicker(QWidget *parent = nullptr);
 
+signals:
+    void processToRemove(pid_t pid);   
+
 private slots:
     void showContextMenu(const QPoint &pos);
 
 private:
     QMenu *contextMenu;
+    pid_t selectedPid;
 };
