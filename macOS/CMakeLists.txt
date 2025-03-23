@@ -4,7 +4,8 @@ main.cpp
 ProcessExplorer.cpp
 ProcessControler.cpp
 ProcessUnit.cpp
-../UI/MainWindow.cpp 
+../UI/MainWindow.cpp
+../UI/Clicker.cpp  
 )
 target_include_directories(ProcessExplorer_macOS PRIVATE ../UI)
 
